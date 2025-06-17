@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { TextField, Button, Stack, Alert, CircularProgress, Typography } from '@mui/material';
+import { TextField, Button, Stack, Alert, CircularProgress, Typography, Skeleton } from '@mui/material';
 import { useChannel } from '@/hooks/useChannel';
 
 export default function UrlEditor({ name }: { name: string }) {
@@ -10,17 +10,21 @@ export default function UrlEditor({ name }: { name: string }) {
 
   useEffect(() => {
     if (data?.url) setUrl(data.url);
-  }, [data]);
+  }, [data?.url]);
 
   if (isLoading) return <CircularProgress sx={{ mt: 2 }} />;
   if (error) return <Alert severity="error">{error.message}</Alert>;
 
+  if (data === undefined) {
+    return <Skeleton variant="rectangular" height={96} />
+  }
+
+
   return (
      <Stack spacing={2} sx={{ mt: 3, maxWidth: 600 }}>
-      {/* ⬇️ READ-ONLY preview of current URL */}
       <Typography variant="subtitle1">
-        Current URL: <strong>{}</strong>
-      </Typography> {/* MUI Typography :contentReference[oaicite:1]{index=1} */}
+        Current URL: <strong>{data}</strong>
+      </Typography>
       <TextField
         label={`URL for ${name}`}
         value={url}

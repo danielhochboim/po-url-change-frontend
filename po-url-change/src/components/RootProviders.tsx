@@ -11,8 +11,8 @@ import {
   QueryClientProvider,
 } from '@tanstack/react-query';
 
-const theme = createTheme();               // ← runs only in the browser
-const queryClient = new QueryClient();     // ← idem
+const theme = createTheme();
+const queryClient = new QueryClient();
 
 export default function RootProviders({ children }: { children: ReactNode }) {
   return (
