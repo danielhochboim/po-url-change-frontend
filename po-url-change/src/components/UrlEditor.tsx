@@ -23,7 +23,7 @@ export default function UrlEditor({ name }: { name: string }) {
   return (
      <Stack spacing={2} sx={{ mt: 3, maxWidth: 600 }}>
       <Typography variant="subtitle1">
-        Current URL: <strong>{data}</strong>
+        Current URL: <strong>{data.url}</strong>
       </Typography>
       <TextField
         label={`URL for ${name}`}
