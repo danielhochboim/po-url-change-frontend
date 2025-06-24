@@ -10,9 +10,10 @@ export default function ChannelSelect() {
 
   if (isLoading) return <CircularProgress />;
   if (error) return <Alert severity="error">{error.message}</Alert>;
-  
+  console.log(data)
   const rows = Object.entries(data ?? {}).map(([name, url]) => ({ name, url }));
-
+  const selectedUrl = rows.find((c) => c.name === selected)?.url;
+;
   return (
     <>
       <FormControl fullWidth>
@@ -30,7 +31,7 @@ export default function ChannelSelect() {
           ))}
         </Select>
       </FormControl>
-      {selected && <UrlEditor name={selected} />}
+      {selected && <UrlEditor name={selected} currentUrl={selectedUrl ?? ''}/>}
     </>
   );
 }

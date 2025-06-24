@@ -3,9 +3,15 @@ import { useEffect, useState } from 'react';
 import { TextField, Button, Stack, Alert, CircularProgress, Typography, Skeleton } from '@mui/material';
 import { useChannel } from '@/hooks/useChannel';
 
-export default function UrlEditor({ name }: { name: string }) {
+interface UrlEditorProps {
+  name: string;
+  currentUrl: string;
+}
+
+
+export default function UrlEditor({ name, currentUrl }: UrlEditorProps) {
   const { data, isLoading, error, update } = useChannel(name);
-  const [url, setUrl] = useState('');
+  const [url, setUrl] = useState(currentUrl);
   const dirty = url !== data?.url;
 
   useEffect(() => {
@@ -22,7 +28,7 @@ export default function UrlEditor({ name }: { name: string }) {
   return (
      <Stack spacing={2} sx={{ mt: 3, maxWidth: 600 }}>
       <Typography variant="subtitle1">
-        Current URL: <strong>{data.url}</strong>
+        Current URL: <strong>{currentUrl}</strong>
       </Typography>
       <TextField
         label={`URL for ${name}`}
