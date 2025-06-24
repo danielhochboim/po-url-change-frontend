@@ -32,7 +32,6 @@ export default function UrlEditor({ name, currentUrl }: UrlEditorProps) {
       </Typography>
       <TextField
         label={`URL for ${name}`}
-        value={url}
         onChange={(e) => setUrl(e.target.value)}
         fullWidth
       />
