@@ -1,34 +1,28 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { TextField, Button, Stack, Alert, Typography } from '@mui/material';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { api } from '@/lib/api';
+import { TextField, Button, Stack, Alert, CircularProgress, Typography, Skeleton } from '@mui/material';
+import { useChannel } from '@/hooks/useChannel';
 
-interface UrlEditorProps {
-  name: string;
-  currentUrl: string;
-}
-
-export default function UrlEditor({ name, currentUrl }: UrlEditorProps) {
-  const [url, setUrl] = useState(currentUrl);
-  const qc = useQueryClient();
-  const dirty = url !== currentUrl;
-
-  const update = useMutation({
-    mutationFn: (newUrl: string) => api.patch(name, newUrl),
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ['channels'] });
-    },
-  });
+export default function UrlEditor({ name }: { name: string }) {
+  const { data, isLoading, error, update } = useChannel(name);
+  const [url, setUrl] = useState('');
+  const dirty = url !== data?.url;
 
   useEffect(() => {
-    setUrl(currentUrl);
-  }, [currentUrl]);
+    if (data?.url) setUrl(data.url);
+  }, [data?.url]);
+
+  if (isLoading) return <CircularProgress sx={{ mt: 2 }} />;
+  if (error) return <Alert severity="error">{error.message}</Alert>;
+
+  if (data === undefined) {
+    return <Skeleton variant="rectangular" height={96} />
+  }
 
   return (
-    <Stack spacing={2} sx={{ mt: 3, maxWidth: 600 }}>
+     <Stack spacing={2} sx={{ mt: 3, maxWidth: 600 }}>
       <Typography variant="subtitle1">
-        Current URL: <strong>{currentUrl}</strong>
+        Current URL: <strong>{data.url}</strong>
       </Typography>
       <TextField
         label={`URL for ${name}`}
